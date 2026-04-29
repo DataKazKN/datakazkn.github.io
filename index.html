@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KazKN — Indie dev · MCP servers · web scraping</title>
+<meta name="description" content="Indie developer building data tools and MCP servers. Vinted Smart Scraper · Vinted MCP · GPT Crawler MCP · Apple App Store Scraper. TypeScript, Apify, Claude.">
+<meta name="author" content="KazKN">
+<meta property="og:title" content="KazKN — Indie dev · MCP servers · web scraping">
+<meta property="og:description" content="Indie developer building data tools and MCP servers. Vinted Smart Scraper · Vinted MCP · GPT Crawler MCP · Apple App Store Scraper.">
+<meta property="og:url" content="https://datakazkn.github.io">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://datakazkn.github.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F1729;
+    --bg-2: #131c33;
+    --panel: #182240;
+    --panel-2: #1d2849;
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.14);
+    --ink: #E7ECF5;
+    --muted: #8A95B2;
+    --muted-2: #5D6789;
+    --teal: #00B4B5;
+    --green: #58C884;
+    --amber: #F2B25C;
+    --blue: #7AA2F7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse 1200px 700px at 78% 18%, rgba(0,180,181,0.08), transparent 70%),
+      radial-gradient(ellipse 900px 600px at 18% 88%, rgba(88,200,132,0.05), transparent 70%);
+  }
+  a { color: var(--teal); text-decoration: none; transition: opacity 150ms; }
+  a:hover { opacity: 0.85; }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 28px; }
+
+  /* HERO */
+  .hero {
+    padding: 96px 0 72px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 18px;
+  }
+  .hero h1 .accent { color: var(--teal); }
+  .hero p.lead {
+    font-size: 1.18rem;
+    color: var(--muted);
+    max-width: 680px;
+    margin-bottom: 24px;
+  }
+  .hero .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+  }
+  .hero .links a {
+    padding: 8px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--ink);
+    background: var(--panel);
+  }
+  .hero .links a:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* SECTIONS */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  section .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--teal);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  section h2 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  section p.tagline {
+    color: var(--muted);
+    font-size: 1.02rem;
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+
+  /* CARDS */
+  .grid { display: grid; gap: 16px; }
+  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    transition: all 200ms;
+  }
+  .card:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+  }
+  .card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+  }
+  .card h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 6px 0 10px;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 0.94rem;
+    margin-bottom: 14px;
+  }
+  .card .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .card .meta span { white-space: nowrap; }
+
+  /* ARTICLE LINKS */
+  .article-cluster {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .article-cluster h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .article-cluster p.summary {
+    color: var(--muted);
+    font-size: 0.94rem;
+    margin-bottom: 14px;
+  }
+  .article-cluster ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .article-cluster ul li a {
+    display: block;
+    padding: 10px 12px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink);
+    transition: border-color 150ms;
+  }
+  .article-cluster ul li a:hover { border-color: var(--teal); color: var(--teal); }
+  .platform { color: var(--muted-2); font-size: 0.72rem; display: block; margin-bottom: 2px; letter-spacing: 0.08em; }
+
+  /* FOOTER */
+  footer {
+    padding: 56px 0 72px;
+    border-top: 1px solid var(--line);
+    color: var(--muted-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+  }
+  footer p { margin-bottom: 6px; }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  .footer-links a { color: var(--muted); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { padding: 72px 0 56px; }
+    section { padding: 44px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <h1>Indie dev building <span class="accent">data tools</span><br>and MCP servers.</h1>
+    <p class="lead">5 production actors on Apify · 250+ active users · 98K+ runs across 26 EU markets.<br>TypeScript, web scraping, Claude API, Datadome bypass.</p>
+    <div class="links">
+      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">github.com/DataKazKN</a>
+      <a href="https://apify.com/kazkn" target="_blank" rel="noopener">apify.com/kazkn</a>
+      <a href="https://dev.to/datakaz" target="_blank" rel="noopener">dev.to/datakaz</a>
+      <a href="https://datakazkn.hashnode.dev" target="_blank" rel="noopener">hashnode</a>
+      <a href="https://medium.com/@DataKazKN" target="_blank" rel="noopener">medium</a>
+    </div>
+  </div>
+</header>
+
+<section id="actors">
+  <div class="container">
+    <div class="label">Actors</div>
+    <h2>Production scrapers + MCP servers</h2>
+    <p class="tagline">All open-source-friendly, all Claude Desktop-compatible via the MCP wrapper actors. Pay-per-event pricing on Apify.</p>
+
+    <div class="grid cols-2">
+
+      <a class="card" href="https://apify.com/kazkn/vinted-smart-scraper" target="_blank" rel="noopener">
+        <div class="num">01 · FLAGSHIP</div>
+        <h3>Vinted Smart Scraper</h3>
+        <p>Cross-country price comparison across 26 EU markets. Find arbitrage spreads in seconds. The only Vinted scraper with built-in arbitrage detection.</p>
+        <div class="meta">
+          <span>$0.018/start + $0.0005/result</span>
+          <span>·</span>
+          <span>97,900+ runs</span>
+          <span>·</span>
+          <span>★ 5.0</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://apify.com/kazkn/vinted-mcp-server" target="_blank" rel="noopener">
+        <div class="num">02 · MCP</div>
+        <h3>Vinted MCP Server</h3>
+        <p>Claude Desktop, Cursor, and any MCP-compatible AI can call Vinted as a tool. Find arbitrage, monitor keywords, analyze sellers — in plain English.</p>
+        <div class="meta">
+          <span>npx -y vinted-mcp-server</span>
+          <span>·</span>
+          <span><a href="https://github.com/DataKazKN/vinted-mcp-server" target="_blank">source</a></span>
+        </div>
+      </a>
+
+      <a class="card" href="https://apify.com/kazkn/gpt-crawler-mcp" target="_blank" rel="noopener">
+        <div class="num">03 · MCP</div>
+        <h3>GPT Crawler MCP</h3>
+        <p>Crawl any website into a clean knowledge file for ChatGPT custom GPTs, Claude Projects, or RAG pipelines. No local setup, no Playwright RAM grief.</p>
+        <div class="meta">
+          <span>JSON · Markdown · plain text</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://apify.com/kazkn/vinted-turbo-scraper" target="_blank" rel="noopener">
+        <div class="num">04 · ⚡</div>
+        <h3>Vinted Turbo Scraper</h3>
+        <p>Faster Vinted listing extraction for URL-based scraping. Lightweight, no cross-country, ideal for high-volume single-country runs.</p>
+        <div class="meta">
+          <span>URL-based · low memory</span>
+        </div>
+      </a>
+
+      <a class="card" href="https://apify.com/kazkn/apple-app-store-localization-scraper" target="_blank" rel="noopener">
+        <div class="num">05 · ASO</div>
+        <h3>App Store Localization Scraper</h3>
+        <p>Scrape iOS App Store with localization gap detection across 40+ languages. Built for ASO managers hunting untapped markets.</p>
+        <div class="meta">
+          <span>40+ locales</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section id="writing">
+  <div class="container">
+    <div class="label">Writing</div>
+    <h2>Articles &amp; tutorials</h2>
+    <p class="tagline">Three article clusters cross-syndicated across dev.to, Medium, and Hashnode. The "How I Built This" cluster goes deep into the architecture; the "How To" cluster is the tutorial; the "Comparison" is the honest market review.</p>
+
+    <div class="article-cluster">
+      <h3>🧠 How I Built a Vinted Scraper That Survives Datadome</h3>
+      <p class="summary">The 6-layer playbook for building a production scraper on a Datadome-protected marketplace. War story, architecture decisions, the day MRR cliffed by 60%.</p>
+      <ul>
+        <li><a href="https://dev.to/datakaz/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-3gh4" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>How I Built a Vinted Scraper</a></li>
+        <li><a href="https://datakazkn.hashnode.dev/building-production-vinted-scraper-architecture-datadome" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Building a Production-Grade Vinted Scraper</a></li>
+        <li><a href="https://medium.com/@DataKazKN/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-ebd5a2fec79f" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>How I Built a Vinted Scraper</a></li>
+      </ul>
+    </div>
+
+    <div class="article-cluster">
+      <h3>📖 How to Scrape Vinted in 2026 (Without Getting Blocked)</h3>
+      <p class="summary">Step-by-step tutorial on scraping Vinted in 2026. Datadome bypass, residential proxies, the Vinted API allowlist, legality, no-code path.</p>
+      <ul>
+        <li><a href="https://dev.to/datakaz/how-to-scrape-vinted-in-2026-without-getting-blocked-2a59" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>How to Scrape Vinted in 2026</a></li>
+        <li><a href="https://datakazkn.hashnode.dev/how-to-scrape-vinted-2026-developer-step-by-step-guide" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Developer Step-by-Step Guide</a></li>
+        <li><a href="https://medium.com/@DataKazKN/how-to-scrape-vinted-in-2026-without-getting-blocked-d45c6188a97c" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>How to Scrape Vinted in 2026</a></li>
+      </ul>
+    </div>
+
+    <div class="article-cluster">
+      <h3>🐍 Vinted Scraper in Python — Honest Developer Guide</h3>
+      <p class="summary">DIY with curl-cffi vs managed via Apify SDK — the real cost-benefit for Python devs building on top of Vinted. 60+ GitHub repos audited.</p>
+      <ul>
+        <li><a href="https://dev.to/datakaz/vinted-scraper-in-python-honest-developer-guide-2026-3j58" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>Honest Developer Guide</a></li>
+        <li><a href="https://datakazkn.hashnode.dev/vinted-api-wrapper-python-architecture-decisions-2026" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Architecture Decisions for 2026</a></li>
+        <li><a href="https://medium.com/@DataKazKN/vinted-scraper-in-python-honest-developer-guide-2026-6baf51e2501c" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>Honest Developer Guide</a></li>
+      </ul>
+    </div>
+
+    <div class="article-cluster">
+      <h3>📊 Best Vinted Scraper in 2026 — Honest Tools Comparison</h3>
+      <p class="summary">Side-by-side review of every Vinted scraper that ships in production: V-Tools, Lobstr, ScrapeBadger, Bright Data, free GitHub libs, Apify-hosted Vinted Smart Scraper.</p>
+      <ul>
+        <li><a href="https://dev.to/datakaz/best-vinted-scraper-in-2026-honest-tools-comparison-1dk1" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>Honest Tools Comparison</a></li>
+        <li><a href="https://datakazkn.hashnode.dev/vinted-scraper-alternative-paid-vs-free-2026-review" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Paid vs Free 2026 Review</a></li>
+        <li><a href="https://medium.com/@DataKazKN/best-vinted-scraper-in-2026-honest-tools-comparison-1796881d0a82" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>Honest Tools Comparison</a></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="label">Get in touch</div>
+    <h2>Working on something interesting?</h2>
+    <p class="tagline">If you're building with Vinted data, MCP servers, or web scraping at scale — I'd love to hear about it. Open an issue on any of my actors, drop a comment on an article, or reach out via GitHub.</p>
+    <div class="links" style="display: flex; flex-wrap: wrap; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;">
+      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">GitHub →</a>
+      <a href="https://console.apify.com/actors/4UAPrwZb1XOlkCJKK/issues" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">Apify Issues →</a>
+      <a href="https://dev.to/datakaz" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">Dev.to →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://apify.com/kazkn" target="_blank" rel="noopener">Apify</a>
+      <a href="https://dev.to/datakaz" target="_blank" rel="noopener">Dev.to</a>
+      <a href="https://datakazkn.hashnode.dev" target="_blank" rel="noopener">Hashnode</a>
+      <a href="https://medium.com/@DataKazKN" target="_blank" rel="noopener">Medium</a>
+      <a href="https://www.npmjs.com/~kazkn" target="_blank" rel="noopener">npm</a>
+    </div>
+    <p>© 2026 KazKN · indie dev · Switzerland</p>
+    <p>Built with HTML/CSS · hosted on GitHub Pages · zero dependencies</p>
+  </div>
+</footer>
+
+</body>
+</html>
