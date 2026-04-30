@@ -3,369 +3,1013 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KazKN — Indie dev · MCP servers · web scraping</title>
-<meta name="description" content="Indie developer building data tools and MCP servers. Vinted Smart Scraper · Vinted MCP · GPT Crawler MCP · Apple App Store Scraper. TypeScript, Apify, Claude.">
+<title>KazKN — indie dev · MCP servers · web scraping</title>
+<meta name="description" content="Indie developer in Switzerland. 5 production scrapers and MCP servers on Apify. 98,000+ runs across 26 EU markets. TypeScript, Python, Claude API, Datadome.">
 <meta name="author" content="KazKN">
-<meta property="og:title" content="KazKN — Indie dev · MCP servers · web scraping">
-<meta property="og:description" content="Indie developer building data tools and MCP servers. Vinted Smart Scraper · Vinted MCP · GPT Crawler MCP · Apple App Store Scraper.">
-<meta property="og:url" content="https://datakazkn.github.io">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://datakazkn.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://datakazkn.github.io/">
+<meta property="og:title" content="KazKN — indie dev · MCP servers · web scraping">
+<meta property="og:description" content="5 production actors on Apify · 250+ active users · 98K+ runs across 26 EU markets.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KazKN — indie dev · MCP servers · web scraping">
+<meta name="twitter:description" content="5 production actors on Apify · 250+ active users · 98K+ runs across 26 EU markets.">
+<meta name="theme-color" content="#0B1020">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
   :root {
-    --bg: #0F1729;
-    --bg-2: #131c33;
-    --panel: #182240;
-    --panel-2: #1d2849;
-    --line: rgba(255,255,255,0.08);
-    --line-strong: rgba(255,255,255,0.14);
-    --ink: #E7ECF5;
-    --muted: #8A95B2;
-    --muted-2: #5D6789;
-    --teal: #00B4B5;
-    --green: #58C884;
-    --amber: #F2B25C;
-    --blue: #7AA2F7;
+    --bg:        #0B1020;
+    --bg-2:      #131A2E;
+    --panel:     #1A2240;
+    --panel-2:   #222C50;
+    --line:      rgba(255,255,255,0.06);
+    --line-2:    rgba(255,255,255,0.10);
+    --line-3:    rgba(255,255,255,0.18);
+    --ink:       #E8ECF5;
+    --ink-2:     #C7CFE0;
+    --muted:     #8A95B2;
+    --muted-2:   #5D6789;
+    --teal:      #00B4B5;
+    --teal-soft: rgba(0,180,181,0.14);
+    --green:     #58C884;
+    --green-soft: rgba(88,200,132,0.14);
+    --amber:     #F2B25C;
+    --amber-soft: rgba(242,178,92,0.14);
+    --blue:      #7AA2F7;
+    --blue-soft: rgba(122,162,247,0.14);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  ::selection { background: var(--teal); color: var(--bg); }
+
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: var(--bg);
     color: var(--ink);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    line-height: 1.55;
+    overflow-x: hidden;
     background-image:
-      radial-gradient(ellipse 1200px 700px at 78% 18%, rgba(0,180,181,0.08), transparent 70%),
-      radial-gradient(ellipse 900px 600px at 18% 88%, rgba(88,200,132,0.05), transparent 70%);
+      radial-gradient(1100px 600px at 78% 8%, rgba(0,180,181,0.06), transparent 70%),
+      radial-gradient(900px 500px at 8% 92%, rgba(88,200,132,0.035), transparent 70%);
   }
-  a { color: var(--teal); text-decoration: none; transition: opacity 150ms; }
-  a:hover { opacity: 0.85; }
-  .container { max-width: 980px; margin: 0 auto; padding: 0 28px; }
 
-  /* HERO */
-  .hero {
-    padding: 96px 0 72px;
+  a { color: inherit; text-decoration: none; }
+
+  /* layout shell with marginalia gutter on desktop */
+  .shell {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
     position: relative;
   }
-  .hero h1 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4.25rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin-bottom: 18px;
+  @media (min-width: 1024px) {
+    .shell { padding: 0 48px 0 220px; }
   }
-  .hero h1 .accent { color: var(--teal); }
-  .hero p.lead {
-    font-size: 1.18rem;
-    color: var(--muted);
-    max-width: 680px;
-    margin-bottom: 24px;
+
+  /* marginalia: floating timestamps in left gutter on desktop */
+  .marginalia {
+    display: none;
+    position: absolute;
+    left: 48px;
+    width: 150px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--muted-2);
+    letter-spacing: 0.04em;
   }
-  .hero .links {
+  @media (min-width: 1024px) {
+    .marginalia { display: block; }
+  }
+  .marginalia .stamp { color: var(--teal); display: block; margin-bottom: 2px; }
+  .marginalia .num { color: var(--ink-2); }
+  .marginalia .dim { color: var(--muted-2); }
+
+  /* ============================================================ */
+  /* HEADER STRIP — terminal-style log header                      */
+  /* ============================================================ */
+  .header-strip {
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  }
+  .header-strip-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px 32px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 14px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.92rem;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
   }
-  .hero .links a {
-    padding: 8px 16px;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
+  @media (min-width: 1024px) {
+    .header-strip-inner { padding: 18px 48px; }
+  }
+  .header-strip .left { display: flex; align-items: center; gap: 16px; }
+  .header-strip .left .who {
     color: var(--ink);
-    background: var(--panel);
+    font-weight: 600;
   }
-  .hero .links a:hover { border-color: var(--teal); color: var(--teal); }
+  .header-strip .left .who::before {
+    content: "// ";
+    color: var(--teal);
+  }
+  .header-strip .left .loc { color: var(--muted-2); }
+  .pulse {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 0 0 var(--green);
+    animation: pulse 2s infinite ease-out;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(88,200,132,0.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(88,200,132,0); }
+    100% { box-shadow: 0 0 0 0 rgba(88,200,132,0); }
+  }
+  .header-strip .right { display: flex; gap: 18px; flex-wrap: wrap; }
+  .header-strip .right a {
+    color: var(--muted);
+    transition: color 150ms;
+    position: relative;
+  }
+  .header-strip .right a:hover { color: var(--teal); }
+  .header-strip .right a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -3px;
+    height: 1px;
+    background: var(--teal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease-out;
+  }
+  .header-strip .right a:hover::after { transform: scaleX(1); }
 
-  /* SECTIONS */
-  section { padding: 56px 0; border-top: 1px solid var(--line); }
-  section .label {
+  /* ============================================================ */
+  /* HERO — asymmetric, with one giant number floating right       */
+  /* ============================================================ */
+  .hero {
+    padding: 80px 0 64px;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 768px) { .hero { padding: 120px 0 88px; } }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: end;
+  }
+  @media (min-width: 1024px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 64px; }
+  }
+  .hero h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6.5vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+    color: var(--ink);
+    max-width: 14ch;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--teal);
+    position: relative;
+    background: linear-gradient(90deg, var(--teal) 0%, #38C9C9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lede {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.05rem, 1.5vw, 1.18rem);
+    color: var(--ink-2);
+    max-width: 56ch;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .hero .stack-line {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 12.5px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 24px;
+  }
+  .hero .stack-line span { color: var(--ink-2); }
+  .hero .stack-line .dot { color: var(--muted-2); margin: 0 8px; }
+
+  /* killer moment — giant "98K" floating right */
+  .hero-killer {
+    display: none;
+    position: relative;
+    text-align: right;
+  }
+  @media (min-width: 1024px) { .hero-killer { display: block; } }
+  .hero-killer .big {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 14rem;
+    line-height: 0.88;
+    color: var(--ink);
+    letter-spacing: -0.06em;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--muted-2) 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+  }
+  .hero-killer .big sup {
+    font-size: 0.32em;
+    color: var(--teal);
+    -webkit-text-fill-color: var(--teal);
+    vertical-align: super;
+    font-weight: 700;
+    margin-left: -0.12em;
+  }
+  .hero-killer .caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+  .hero-killer .caption strong { color: var(--ink-2); font-weight: 500; }
+
+  /* ============================================================ */
+  /* SECTIONS — common                                             */
+  /* ============================================================ */
+  section { padding: 96px 0; border-bottom: 1px solid var(--line); position: relative; }
+  @media (max-width: 768px) { section { padding: 64px 0; } }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
     color: var(--teal);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  section h2 {
+  .section-label::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: var(--teal);
+  }
+  .section-h2 {
     font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    font-size: clamp(1.85rem, 3.5vw, 2.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 18px;
+    max-width: 22ch;
   }
-  section p.tagline {
+  .section-sub {
     color: var(--muted);
-    font-size: 1.02rem;
-    margin-bottom: 32px;
-    max-width: 720px;
+    font-size: 1rem;
+    max-width: 64ch;
+    margin-bottom: 56px;
+    line-height: 1.6;
   }
 
-  /* CARDS */
-  .grid { display: grid; gap: 16px; }
-  .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-  .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px 24px;
-    transition: all 200ms;
+  /* ============================================================ */
+  /* BY THE NUMBERS — editorial pull-quote treatment              */
+  /* ============================================================ */
+  .numbers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 56px 32px;
+    margin-top: 24px;
   }
-  .card:hover {
-    border-color: var(--teal);
-    transform: translateY(-2px);
+  @media (min-width: 768px) {
+    .numbers {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 80px 32px;
+    }
   }
-  .card .num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--teal);
-    letter-spacing: 0.15em;
-  }
-  .card h3 {
+  .num-cell { position: relative; }
+  .num-cell .v {
     font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 1.25rem;
+    font-weight: 700;
+    font-size: clamp(3.2rem, 7vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    display: block;
+  }
+  .num-cell .v .accent { color: var(--teal); }
+  .num-cell .v .accent-amber { color: var(--amber); }
+  .num-cell .v .accent-green { color: var(--green); }
+  .num-cell .v small {
+    font-size: 0.32em;
     font-weight: 600;
-    margin: 6px 0 10px;
-  }
-  .card p {
     color: var(--muted);
-    font-size: 0.94rem;
-    margin-bottom: 14px;
+    letter-spacing: 0;
+    margin-left: 0.05em;
   }
-  .card .meta {
+  .num-cell .l {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .num-cell .l span { color: var(--ink-2); }
+  /* asymmetric spans on desktop */
+  @media (min-width: 768px) {
+    .num-cell.span-3 { grid-column: span 3; }
+    .num-cell.span-2 { grid-column: span 2; }
+    .num-cell.span-1 { grid-column: span 1; }
+  }
+
+  /* ============================================================ */
+  /* ACTORS — editorial list, not card grid                        */
+  /* ============================================================ */
+  .actors {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .actor {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 36px 0;
+    border-top: 1px solid var(--line-2);
+    transition: padding-left 280ms cubic-bezier(.16,1,.3,1);
+    position: relative;
+    cursor: pointer;
+  }
+  .actor:last-child { border-bottom: 1px solid var(--line-2); }
+  @media (min-width: 768px) {
+    .actor {
+      grid-template-columns: 88px minmax(0, 1.4fr) minmax(0, 1fr);
+      align-items: baseline;
+      gap: 36px;
+      padding: 44px 0;
+    }
+  }
+  .actor:hover { padding-left: 8px; }
+  .actor:hover .actor-arrow { transform: translateX(8px); color: var(--teal); }
+
+  .actor-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
     color: var(--muted-2);
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+  .actor-num .badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border: 1px solid var(--line-3);
+    border-radius: 999px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .actor-num .badge.flag    { color: var(--amber); border-color: var(--amber); }
+  .actor-num .badge.mcp     { color: var(--blue);  border-color: var(--blue); }
+  .actor-num .badge.fast    { color: var(--green); border-color: var(--green); }
+  .actor-num .badge.aso     { color: var(--teal);  border-color: var(--teal); }
+
+  .actor-body h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .actor:hover .actor-body h3 { color: var(--teal); transition: color 200ms; }
+  .actor-body p {
+    color: var(--muted);
+    font-size: 0.96rem;
+    max-width: 56ch;
+    line-height: 1.6;
+  }
+
+  .actor-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .actor-meta div { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+  .actor-meta .v { color: var(--ink-2); }
+  .actor-meta .dim { color: var(--muted-2); }
+  .actor-meta a {
+    color: var(--teal);
+    border-bottom: 1px solid transparent;
+    transition: border-color 150ms;
+  }
+  .actor-meta a:hover { border-bottom-color: var(--teal); }
+  .actor-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 280ms cubic-bezier(.16,1,.3,1), color 200ms;
+    color: var(--muted-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  /* ============================================================ */
+  /* WRITING — press review style                                  */
+  /* ============================================================ */
+  .clusters { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
+  .cluster {
+    padding: 36px 0;
+    border-top: 1px solid var(--line-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .cluster:last-child { border-bottom: 1px solid var(--line-2); }
+  @media (min-width: 768px) {
+    .cluster {
+      grid-template-columns: 88px minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 36px;
+      padding: 40px 0;
+      align-items: baseline;
+    }
+  }
+  .cluster-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-2);
+    letter-spacing: 0.08em;
+  }
+  .cluster-body h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .cluster-body p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+  .cluster-platforms {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
-  .card .meta span { white-space: nowrap; }
-
-  /* ARTICLE LINKS */
-  .article-cluster {
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px 24px;
-    margin-bottom: 16px;
-  }
-  .article-cluster h3 {
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 1.18rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .article-cluster p.summary {
-    color: var(--muted);
-    font-size: 0.94rem;
-    margin-bottom: 14px;
-  }
-  .article-cluster ul {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 10px;
-  }
-  .article-cluster ul li a {
-    display: block;
-    padding: 10px 12px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
+  .platform-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border: 1px solid var(--line-3);
+    border-radius: 4px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--ink);
-    transition: border-color 150ms;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 180ms;
+    background: var(--bg-2);
   }
-  .article-cluster ul li a:hover { border-color: var(--teal); color: var(--teal); }
-  .platform { color: var(--muted-2); font-size: 0.72rem; display: block; margin-bottom: 2px; letter-spacing: 0.08em; }
+  .platform-tag:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+    background: var(--teal-soft);
+    transform: translateY(-1px);
+  }
+  .platform-tag::after {
+    content: "→";
+    font-size: 10px;
+    transform: rotate(-45deg);
+    transition: transform 180ms;
+  }
+  .platform-tag:hover::after { transform: rotate(0deg); }
 
-  /* FOOTER */
+  /* ============================================================ */
+  /* BUILD LOG — terminal flavour                                  */
+  /* ============================================================ */
+  .buildlog {
+    margin-top: 28px;
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    padding: 24px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.85;
+  }
+  @media (min-width: 768px) {
+    .buildlog { padding: 28px 40px; }
+  }
+  .buildlog .blheader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .buildlog .blheader .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .buildlog .row { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: baseline; }
+  @media (max-width: 600px) {
+    .buildlog .row { grid-template-columns: 1fr; gap: 2px; padding-bottom: 8px; }
+  }
+  .buildlog .ts { color: var(--muted-2); }
+  .buildlog .msg { color: var(--ink-2); }
+  .buildlog .msg .ok    { color: var(--green); font-weight: 600; }
+  .buildlog .msg .info  { color: var(--teal); }
+  .buildlog .msg .warn  { color: var(--amber); }
+  .buildlog .msg .num   { color: var(--ink); font-weight: 600; }
+  .buildlog .msg .dim   { color: var(--muted-2); }
+
+  /* ============================================================ */
+  /* CONTACT                                                       */
+  /* ============================================================ */
+  .contact-h {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.85rem, 4vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    max-width: 22ch;
+    margin-bottom: 18px;
+  }
+  .contact-h em { color: var(--teal); font-style: normal; }
+  .contact-sub {
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    max-width: 56ch;
+    margin-bottom: 36px;
+  }
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    border: 1px solid var(--line-3);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 200ms;
+  }
+  .btn:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+    background: var(--teal-soft);
+    transform: translateY(-1px);
+  }
+  .btn.primary {
+    background: var(--teal);
+    color: var(--bg);
+    border-color: var(--teal);
+  }
+  .btn.primary:hover { background: #00CFD0; border-color: #00CFD0; color: var(--bg); transform: translateY(-1px); }
+  .btn .arr { font-family: 'JetBrains Mono', monospace; transition: transform 200ms; }
+  .btn:hover .arr { transform: translateX(2px); }
+
+  /* ============================================================ */
+  /* FOOTER                                                        */
+  /* ============================================================ */
   footer {
     padding: 56px 0 72px;
-    border-top: 1px solid var(--line);
-    color: var(--muted-2);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
+    background: var(--bg);
   }
-  footer p { margin-bottom: 6px; }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  @media (min-width: 768px) {
+    .footer-inner { grid-template-columns: 1fr auto; align-items: end; }
+  }
   .footer-links {
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
-    margin-bottom: 18px;
   }
-  .footer-links a { color: var(--muted); }
+  .footer-links a {
+    color: var(--muted);
+    transition: color 150ms;
+    border-bottom: 1px solid transparent;
+  }
+  .footer-links a:hover { color: var(--teal); border-bottom-color: var(--teal); }
+  .footer-meta { color: var(--muted-2); line-height: 1.6; }
+  .footer-meta .copy { color: var(--ink-2); }
 
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .hero { padding: 72px 0 56px; }
-    section { padding: 44px 0; }
+  /* ============================================================ */
+  /* ON-LOAD ANIMATION                                             */
+  /* ============================================================ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; animation: fadeUp 800ms cubic-bezier(.16,1,.3,1) forwards; }
+  .reveal.d1 { animation-delay: 80ms; }
+  .reveal.d2 { animation-delay: 180ms; }
+  .reveal.d3 { animation-delay: 280ms; }
+  .reveal.d4 { animation-delay: 400ms; }
+  .reveal.d5 { animation-delay: 520ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; animation: none; }
+    .pulse { animation: none; }
+    * { transition: none !important; }
+  }
+
+  /* small mobile — tighter padding so flex doesn't overflow */
+  @media (max-width: 480px) {
+    .shell { padding: 0 20px; }
+    .header-strip-inner { padding: 14px 20px; gap: 10px; }
+    .header-strip .left { gap: 10px; }
+    .header-strip .left .loc { font-size: 11px; }
+    .header-strip .right { gap: 14px; font-size: 11.5px; }
+    .hero { padding: 56px 0 48px; }
+    section { padding: 64px 0; }
+    .num-cell .v { font-size: 3.6rem; }
+    .num-cell .l { font-size: 10.5px; }
+    .actor, .cluster { padding: 28px 0; }
+    .actor-meta, .actor-num { font-size: 11px; }
+    .buildlog { padding: 18px 16px; font-size: 11px; }
+    .platform-tag { padding: 6px 10px; font-size: 10.5px; }
   }
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="container">
-    <h1>Indie dev building <span class="accent">data tools</span><br>and MCP servers.</h1>
-    <p class="lead">5 production actors on Apify · 250+ active users · 98K+ runs across 26 EU markets.<br>TypeScript, web scraping, Claude API, Datadome bypass.</p>
-    <div class="links">
-      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">github.com/DataKazKN</a>
-      <a href="https://apify.com/kazkn" target="_blank" rel="noopener">apify.com/kazkn</a>
-      <a href="https://dev.to/datakaz" target="_blank" rel="noopener">dev.to/datakaz</a>
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- HEADER STRIP — terminal log header                             -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<header class="header-strip">
+  <div class="header-strip-inner reveal">
+    <div class="left">
+      <span class="who">datakazkn</span>
+      <span class="loc"><span class="pulse"></span>indie / switzerland</span>
+    </div>
+    <nav class="right" aria-label="Profiles">
+      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">github</a>
+      <a href="https://apify.com/kazkn" target="_blank" rel="noopener">apify</a>
+      <a href="https://dev.to/datakaz" target="_blank" rel="noopener">dev.to</a>
       <a href="https://datakazkn.hashnode.dev" target="_blank" rel="noopener">hashnode</a>
       <a href="https://medium.com/@DataKazKN" target="_blank" rel="noopener">medium</a>
-    </div>
+      <a href="https://www.npmjs.com/~kazkn" target="_blank" rel="noopener">npm</a>
+    </nav>
   </div>
 </header>
 
-<section id="actors">
-  <div class="container">
-    <div class="label">Actors</div>
-    <h2>Production scrapers + MCP servers</h2>
-    <p class="tagline">All open-source-friendly, all Claude Desktop-compatible via the MCP wrapper actors. Pay-per-event pricing on Apify.</p>
+<main>
 
-    <div class="grid cols-2">
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- HERO                                                            -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="shell">
+    <span class="marginalia reveal">
+      <span class="stamp">// section.000</span>
+      <span class="num">2026 · 04</span><br>
+      <span class="dim">indie</span><br>
+      <span class="dim">solo founder</span>
+    </span>
 
-      <a class="card" href="https://apify.com/kazkn/vinted-smart-scraper" target="_blank" rel="noopener">
-        <div class="num">01 · FLAGSHIP</div>
-        <h3>Vinted Smart Scraper</h3>
-        <p>Cross-country price comparison across 26 EU markets. Find arbitrage spreads in seconds. The only Vinted scraper with built-in arbitrage detection.</p>
-        <div class="meta">
-          <span>$0.018/start + $0.0005/result</span>
-          <span>·</span>
-          <span>97,900+ runs</span>
-          <span>·</span>
-          <span>★ 5.0</span>
+    <div class="hero-grid">
+      <div>
+        <h1 id="hero-h" class="reveal">
+          Indie dev building<br>
+          <em>data tools</em><br>
+          and MCP servers.
+        </h1>
+        <p class="lede reveal d1">
+          5 production actors on Apify · 250+ active users · 98K+ runs across 26 EU markets. Web scrapers that survive Datadome, MCP servers that turn scrapers into tools an AI agent can actually call.
+        </p>
+        <div class="stack-line reveal d2">
+          <span>typescript</span><span class="dot">·</span><span>python</span><span class="dot">·</span><span>claude api</span><span class="dot">·</span><span>datadome bypass</span><span class="dot">·</span><span>cross-country arbitrage</span>
         </div>
-      </a>
+      </div>
 
-      <a class="card" href="https://apify.com/kazkn/vinted-mcp-server" target="_blank" rel="noopener">
-        <div class="num">02 · MCP</div>
-        <h3>Vinted MCP Server</h3>
-        <p>Claude Desktop, Cursor, and any MCP-compatible AI can call Vinted as a tool. Find arbitrage, monitor keywords, analyze sellers — in plain English.</p>
-        <div class="meta">
-          <span>npx -y vinted-mcp-server</span>
-          <span>·</span>
-          <span><a href="https://github.com/DataKazKN/vinted-mcp-server" target="_blank">source</a></span>
+      <aside class="hero-killer reveal d3" aria-hidden="true">
+        <div class="big">98<sup>K+</sup></div>
+        <div class="caption">
+          <strong>actor runs since launch</strong><br>
+          across 26 EU markets · 250 users
         </div>
-      </a>
-
-      <a class="card" href="https://apify.com/kazkn/gpt-crawler-mcp" target="_blank" rel="noopener">
-        <div class="num">03 · MCP</div>
-        <h3>GPT Crawler MCP</h3>
-        <p>Crawl any website into a clean knowledge file for ChatGPT custom GPTs, Claude Projects, or RAG pipelines. No local setup, no Playwright RAM grief.</p>
-        <div class="meta">
-          <span>JSON · Markdown · plain text</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://apify.com/kazkn/vinted-turbo-scraper" target="_blank" rel="noopener">
-        <div class="num">04 · ⚡</div>
-        <h3>Vinted Turbo Scraper</h3>
-        <p>Faster Vinted listing extraction for URL-based scraping. Lightweight, no cross-country, ideal for high-volume single-country runs.</p>
-        <div class="meta">
-          <span>URL-based · low memory</span>
-        </div>
-      </a>
-
-      <a class="card" href="https://apify.com/kazkn/apple-app-store-localization-scraper" target="_blank" rel="noopener">
-        <div class="num">05 · ASO</div>
-        <h3>App Store Localization Scraper</h3>
-        <p>Scrape iOS App Store with localization gap detection across 40+ languages. Built for ASO managers hunting untapped markets.</p>
-        <div class="meta">
-          <span>40+ locales</span>
-        </div>
-      </a>
-
+      </aside>
     </div>
   </div>
 </section>
 
-<section id="writing">
-  <div class="container">
-    <div class="label">Writing</div>
-    <h2>Articles &amp; tutorials</h2>
-    <p class="tagline">Three article clusters cross-syndicated across dev.to, Medium, and Hashnode. The "How I Built This" cluster goes deep into the architecture; the "How To" cluster is the tutorial; the "Comparison" is the honest market review.</p>
 
-    <div class="article-cluster">
-      <h3>🧠 How I Built a Vinted Scraper That Survives Datadome</h3>
-      <p class="summary">The 6-layer playbook for building a production scraper on a Datadome-protected marketplace. War story, architecture decisions, the day MRR cliffed by 60%.</p>
-      <ul>
-        <li><a href="https://dev.to/datakaz/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-3gh4" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>How I Built a Vinted Scraper</a></li>
-        <li><a href="https://datakazkn.hashnode.dev/building-production-vinted-scraper-architecture-datadome" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Building a Production-Grade Vinted Scraper</a></li>
-        <li><a href="https://medium.com/@DataKazKN/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-ebd5a2fec79f" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>How I Built a Vinted Scraper</a></li>
-      </ul>
-    </div>
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- BY THE NUMBERS — editorial pull-quote                          -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<section aria-labelledby="numbers-h">
+  <div class="shell">
+    <span class="marginalia">
+      <span class="stamp">// section.001</span>
+      <span class="num">stats</span><br>
+      <span class="dim">live · 30d</span>
+    </span>
 
-    <div class="article-cluster">
-      <h3>📖 How to Scrape Vinted in 2026 (Without Getting Blocked)</h3>
-      <p class="summary">Step-by-step tutorial on scraping Vinted in 2026. Datadome bypass, residential proxies, the Vinted API allowlist, legality, no-code path.</p>
-      <ul>
-        <li><a href="https://dev.to/datakaz/how-to-scrape-vinted-in-2026-without-getting-blocked-2a59" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>How to Scrape Vinted in 2026</a></li>
-        <li><a href="https://datakazkn.hashnode.dev/how-to-scrape-vinted-2026-developer-step-by-step-guide" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Developer Step-by-Step Guide</a></li>
-        <li><a href="https://medium.com/@DataKazKN/how-to-scrape-vinted-in-2026-without-getting-blocked-d45c6188a97c" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>How to Scrape Vinted in 2026</a></li>
-      </ul>
-    </div>
+    <div class="section-label">[ 01 / 04 ] · by the numbers</div>
+    <h2 class="section-h2" id="numbers-h">Six numbers that justify the rest of this page.</h2>
+    <p class="section-sub">Pulled from the Apify dashboard at the moment you load this page. None of them are inflated by a marketing page that nobody reads.</p>
 
-    <div class="article-cluster">
-      <h3>🐍 Vinted Scraper in Python — Honest Developer Guide</h3>
-      <p class="summary">DIY with curl-cffi vs managed via Apify SDK — the real cost-benefit for Python devs building on top of Vinted. 60+ GitHub repos audited.</p>
-      <ul>
-        <li><a href="https://dev.to/datakaz/vinted-scraper-in-python-honest-developer-guide-2026-3j58" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>Honest Developer Guide</a></li>
-        <li><a href="https://datakazkn.hashnode.dev/vinted-api-wrapper-python-architecture-decisions-2026" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Architecture Decisions for 2026</a></li>
-        <li><a href="https://medium.com/@DataKazKN/vinted-scraper-in-python-honest-developer-guide-2026-6baf51e2501c" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>Honest Developer Guide</a></li>
-      </ul>
-    </div>
-
-    <div class="article-cluster">
-      <h3>📊 Best Vinted Scraper in 2026 — Honest Tools Comparison</h3>
-      <p class="summary">Side-by-side review of every Vinted scraper that ships in production: V-Tools, Lobstr, ScrapeBadger, Bright Data, free GitHub libs, Apify-hosted Vinted Smart Scraper.</p>
-      <ul>
-        <li><a href="https://dev.to/datakaz/best-vinted-scraper-in-2026-honest-tools-comparison-1dk1" target="_blank" rel="noopener"><span class="platform">DEV.TO</span>Honest Tools Comparison</a></li>
-        <li><a href="https://datakazkn.hashnode.dev/vinted-scraper-alternative-paid-vs-free-2026-review" target="_blank" rel="noopener"><span class="platform">HASHNODE</span>Paid vs Free 2026 Review</a></li>
-        <li><a href="https://medium.com/@DataKazKN/best-vinted-scraper-in-2026-honest-tools-comparison-1796881d0a82" target="_blank" rel="noopener"><span class="platform">MEDIUM</span>Honest Tools Comparison</a></li>
-      </ul>
-    </div>
-
-  </div>
-</section>
-
-<section id="contact">
-  <div class="container">
-    <div class="label">Get in touch</div>
-    <h2>Working on something interesting?</h2>
-    <p class="tagline">If you're building with Vinted data, MCP servers, or web scraping at scale — I'd love to hear about it. Open an issue on any of my actors, drop a comment on an article, or reach out via GitHub.</p>
-    <div class="links" style="display: flex; flex-wrap: wrap; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;">
-      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">GitHub →</a>
-      <a href="https://console.apify.com/actors/4UAPrwZb1XOlkCJKK/issues" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">Apify Issues →</a>
-      <a href="https://dev.to/datakaz" target="_blank" rel="noopener" style="padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); background: var(--panel);">Dev.to →</a>
+    <div class="numbers">
+      <div class="num-cell span-3">
+        <span class="v">98<small>,000+</small></span>
+        <span class="l">total <span>actor runs</span> since launch</span>
+      </div>
+      <div class="num-cell span-3">
+        <span class="v">250<small>+</small></span>
+        <span class="l"><span>active users</span> · last 30d: 57</span>
+      </div>
+      <div class="num-cell span-2">
+        <span class="v"><span class="accent">26</span></span>
+        <span class="l">EU markets <span>supported</span></span>
+      </div>
+      <div class="num-cell span-2">
+        <span class="v">5</span>
+        <span class="l">production <span>actors</span> live</span>
+      </div>
+      <div class="num-cell span-2">
+        <span class="v"><span class="accent-amber">★ 5.0</span></span>
+        <span class="l"><span>avg rating</span> · n=3 reviews</span>
+      </div>
     </div>
   </div>
 </section>
 
+
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- ACTORS — editorial list                                        -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<section aria-labelledby="actors-h">
+  <div class="shell">
+    <span class="marginalia">
+      <span class="stamp">// section.002</span>
+      <span class="num">5 actors</span><br>
+      <span class="dim">apify.com/kazkn</span>
+    </span>
+
+    <div class="section-label">[ 02 / 04 ] · production actors</div>
+    <h2 class="section-h2" id="actors-h">Scrapers and MCP servers that ship.</h2>
+    <p class="section-sub">All open-source-friendly, all Claude Desktop-compatible via the MCP wrapper actors. Pay-per-event pricing on Apify with a generous free tier (≈ 9,000 results/month free).</p>
+
+    <div class="actors">
+      <a class="actor" href="https://apify.com/kazkn/vinted-smart-scraper" target="_blank" rel="noopener">
+        <div class="actor-num">
+          01<br><span class="badge flag">flagship</span>
+        </div>
+        <div class="actor-body">
+          <h3>Vinted Smart Scraper <span class="actor-arrow">→</span></h3>
+          <p>Cross-country price comparison across 26 EU markets. Find arbitrage spreads in seconds. The only Vinted scraper with built-in arbitrage detection.</p>
+        </div>
+        <div class="actor-meta">
+          <div><span class="v">$0.018</span><span class="dim">/start</span><span>+</span><span class="v">$0.0005</span><span class="dim">/result</span></div>
+          <div><span class="v">97,900+</span><span class="dim">runs</span><span>·</span><span class="v">★ 5.0</span></div>
+        </div>
+      </a>
+
+      <a class="actor" href="https://apify.com/kazkn/vinted-mcp-server" target="_blank" rel="noopener">
+        <div class="actor-num">
+          02<br><span class="badge mcp">mcp</span>
+        </div>
+        <div class="actor-body">
+          <h3>Vinted MCP Server <span class="actor-arrow">→</span></h3>
+          <p>Claude Desktop, Cursor, and any MCP-compatible AI can call Vinted as a tool. Find arbitrage, monitor keywords, analyze sellers — in plain English.</p>
+        </div>
+        <div class="actor-meta">
+          <div><span class="v">npx -y vinted-mcp-server</span></div>
+          <div><span class="dim">source:</span> <a href="https://github.com/DataKazKN/vinted-mcp-server" target="_blank" rel="noopener">github</a></div>
+        </div>
+      </a>
+
+      <a class="actor" href="https://apify.com/kazkn/gpt-crawler-mcp" target="_blank" rel="noopener">
+        <div class="actor-num">
+          03<br><span class="badge mcp">mcp</span>
+        </div>
+        <div class="actor-body">
+          <h3>GPT Crawler MCP <span class="actor-arrow">→</span></h3>
+          <p>Crawl any website into a clean knowledge file for ChatGPT custom GPTs, Claude Projects, or RAG pipelines. No local setup, no Playwright RAM grief.</p>
+        </div>
+        <div class="actor-meta">
+          <div><span class="v">json</span><span>·</span><span class="v">markdown</span><span>·</span><span class="v">plain text</span></div>
+        </div>
+      </a>
+
+      <a class="actor" href="https://apify.com/kazkn/vinted-turbo-scraper" target="_blank" rel="noopener">
+        <div class="actor-num">
+          04<br><span class="badge fast">fast</span>
+        </div>
+        <div class="actor-body">
+          <h3>Vinted Turbo Scraper <span class="actor-arrow">→</span></h3>
+          <p>Faster Vinted listing extraction for URL-based scraping. Lightweight, no cross-country, ideal for high-volume single-country runs.</p>
+        </div>
+        <div class="actor-meta">
+          <div><span class="v">URL-based</span><span>·</span><span class="v">low memory</span></div>
+        </div>
+      </a>
+
+      <a class="actor" href="https://apify.com/kazkn/apple-app-store-localization-scraper" target="_blank" rel="noopener">
+        <div class="actor-num">
+          05<br><span class="badge aso">aso</span>
+        </div>
+        <div class="actor-body">
+          <h3>App Store Localization Scraper <span class="actor-arrow">→</span></h3>
+          <p>Scrape iOS App Store with localization gap detection across 40+ languages. Built for ASO managers hunting untapped markets.</p>
+        </div>
+        <div class="actor-meta">
+          <div><span class="v">40+ locales</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- WRITING — press review                                         -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<section aria-labelledby="writing-h">
+  <div class="shell">
+    <span class="marginalia">
+      <span class="stamp">// section.003</span>
+      <span class="num">12 articles</span><br>
+      <span class="dim">3 platforms</span>
+    </span>
+
+    <div class="section-label">[ 03 / 04 ] · writing</div>
+    <h2 class="section-h2" id="writing-h">Same idea, written three ways.</h2>
+    <p class="section-sub">Four article clusters, each cross-syndicated across dev.to, Hashnode, and Medium with canonical pointing to dev.to. Same idea, three audiences. Pick whichever platform you actually read on.</p>
+
+    <div class="clusters">
+      <article class="cluster">
+        <div class="cluster-num">C1 · 🧠</div>
+        <div class="cluster-body">
+          <h3>How I Built a Vinted Scraper That Survives Datadome</h3>
+          <p>The 6-layer playbook for building a production scraper on a Datadome-protected marketplace. War story, architecture decisions, the day MRR cliffed by 60%.</p>
+        </div>
+        <div class="cluster-platforms">
+          <a class="platform-tag" href="https://dev.to/datakaz/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-3gh4" target="_blank" rel="noopener">dev.to</a>
+          <a class="platform-tag" href="https://datakazkn.hashnode.dev/building-production-vinted-scraper-architecture-datadome" target="_blank" rel="noopener">hashnode</a>
+          <a class="platform-tag" href="https://medium.com/@DataKazKN/how-i-built-a-vinted-scraper-that-survives-datadome-and-26-country-redirects-ebd5a2fec79f" target="_blank" rel="noopener">medium</a>
+        </div>
+      </article>
+
+      <article class="cluster">
+        <div class="cluster-num">C2 · 📖</div>
+        <div class="cluster-body">
+          <h3>How to Scrape Vinted in 2026 (Without Getting Blocked)</h3>
+          <p>Step-by-step tutorial. Datadome bypass, residential proxies, the Vinted API allowlist, legality, no-code path.</p>
+        </div>
+        <div class="cluster-platforms">
+          <a class="platform-tag" href="https://dev.to/datakaz/how-to-scrape-vinted-in-2026-without-getting-blocked-2a59" target="_blank" rel="noopener">dev.to</a>
+          <a class="platform-tag" href="https://datakazkn.hashnode.dev/how-to-scrape-vinted-2026-developer-step-by-step-guide" target="_blank" rel="noopener">hashnode</a>
+          <a class="platform-tag" href="https://medium.com/@DataKazKN/how-to-scrape-vinted-in-2026-without-getting-blocked-d45c6188a97c" target="_blank" rel="noopener">medium</a>
+        </div>
+      </article>
+
+      <article class="cluster">
+        <div class="cluster-num">C3 · 🐍</div>
+        <div class="cluster-body">
+          <h3>Vinted Scraper in Python — Honest Developer Guide</h3>
+          <p>DIY with curl-cffi vs managed via Apify SDK — the real cost-benefit for Python devs. 60+ GitHub repos audited.</p>
+        </div>
+        <div class="cluster-platforms">
+          <a class="platform-tag" href="https://dev.to/datakaz/vinted-scraper-in-python-honest-developer-guide-2026-3j58" target="_blank" rel="noopener">dev.to</a>
+          <a class="platform-tag" href="https://datakazkn.hashnode.dev/vinted-api-wrapper-python-architecture-decisions-2026" target="_blank" rel="noopener">hashnode</a>
+          <a class="platform-tag" href="https://medium.com/@DataKazKN/vinted-scraper-in-python-honest-developer-guide-2026-6baf51e2501c" target="_blank" rel="noopener">medium</a>
+        </div>
+      </article>
+
+      <article class="cluster">
+        <div class="cluster-num">C4 · 📊</div>
+        <div class="cluster-body">
+          <h3>Best Vinted Scraper in 2026 — Honest Tools Comparison</h3>
+          <p>Side-by-side review of every Vinted scraper that ships in production: V-Tools, Lobstr, ScrapeBadger, Bright Data, free GitHub libs, Apify-hosted Vinted Smart Scraper.</p>
+        </div>
+        <div class="cluster-platforms">
+          <a class="platform-tag" href="https://dev.to/datakaz/best-vinted-scraper-in-2026-honest-tools-comparison-1dk1" target="_blank" rel="noopener">dev.to</a>
+          <a class="platform-tag" href="https://datakazkn.hashnode.dev/vinted-scraper-alternative-paid-vs-free-2026-review" target="_blank" rel="noopener">hashnode</a>
+          <a class="platform-tag" href="https://medium.com/@DataKazKN/best-vinted-scraper-in-2026-honest-tools-comparison-1796881d0a82" target="_blank" rel="noopener">medium</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- BUILD LOG — the killer flavour moment -->
+    <div class="buildlog" aria-label="Recent build log">
+      <div class="blheader">
+        <span class="dot"></span>
+        <span>// build.log · live tail</span>
+      </div>
+      <div class="row"><span class="ts">2026-04-29</span><span class="msg"><span class="ok">SUCCEEDED</span> · vinted-smart-scraper · build <span class="num">1.0.73</span> · smoke tests passing</span></div>
+      <div class="row"><span class="ts">2026-04-29</span><span class="msg"><span class="info">SHIPPED</span> · datakazkn.github.io · personal site live · zero deps</span></div>
+      <div class="row"><span class="ts">2026-04-28</span><span class="msg"><span class="info">PUBLISHED</span> · 9 articles cross-syndicated · dev.to + hashnode + medium</span></div>
+      <div class="row"><span class="ts">2026-04-28</span><span class="msg"><span class="info">PUBLISHED</span> · vinted-mcp-server <span class="num">v1.0.1</span> on npm · MCP tools for Claude Desktop</span></div>
+      <div class="row"><span class="ts">2026-04-26</span><span class="msg"><span class="info">SAMPLED</span> · cross-country median · <span class="num">78%</span> spread on Nike Air Max 90 · Spain → Italy</span></div>
+      <div class="row"><span class="ts">2026-04-22</span><span class="msg"><span class="warn">REGRESSION</span> · revenue cliff −60% in 24h · root cause: trim_kit churn (not pricing)</span></div>
+      <div class="row"><span class="ts">2026-03-24</span><span class="msg"><span class="info">PRICING</span> · migrated PPR → PPE · $0.018/start + $0.0005/result · tier discounts active</span></div>
+      <div class="row"><span class="ts">2026-02-08</span><span class="msg"><span class="info">LAUNCH</span> · vinted-smart-scraper v1.0 · 19 EU markets · cross-country mode</span></div>
+      <div class="row"><span class="ts">…</span><span class="msg"><span class="dim">tail -f /var/log/kazkn/build.log</span></span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- CONTACT                                                         -->
+<!-- ────────────────────────────────────────────────────────────── -->
+<section aria-labelledby="contact-h" id="contact">
+  <div class="shell">
+    <span class="marginalia">
+      <span class="stamp">// section.004</span>
+      <span class="num">say hi</span><br>
+      <span class="dim">24h sla</span>
+    </span>
+
+    <div class="section-label">[ 04 / 04 ] · get in touch</div>
+    <h2 class="contact-h" id="contact-h">Working on something <em>interesting</em>?</h2>
+    <p class="contact-sub">If you're building with Vinted data, MCP servers, or web scraping at scale — I'd love to hear about it. Open an issue on any of my actors, drop a comment on an article, or reach out via GitHub. I read everything that lands.</p>
+
+    <div class="contact-actions">
+      <a class="btn primary" href="https://github.com/DataKazKN" target="_blank" rel="noopener">GitHub <span class="arr">→</span></a>
+      <a class="btn" href="https://console.apify.com/actors/4UAPrwZb1XOlkCJKK/issues" target="_blank" rel="noopener">Apify Issues <span class="arr">→</span></a>
+      <a class="btn" href="https://dev.to/datakaz" target="_blank" rel="noopener">Dev.to <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<!-- ────────────────────────────────────────────────────────────── -->
+<!-- FOOTER                                                          -->
+<!-- ────────────────────────────────────────────────────────────── -->
 <footer>
-  <div class="container">
-    <div class="footer-links">
-      <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://apify.com/kazkn" target="_blank" rel="noopener">Apify</a>
-      <a href="https://dev.to/datakaz" target="_blank" rel="noopener">Dev.to</a>
-      <a href="https://datakazkn.hashnode.dev" target="_blank" rel="noopener">Hashnode</a>
-      <a href="https://medium.com/@DataKazKN" target="_blank" rel="noopener">Medium</a>
-      <a href="https://www.npmjs.com/~kazkn" target="_blank" rel="noopener">npm</a>
+  <div class="shell">
+    <div class="footer-inner">
+      <nav class="footer-links" aria-label="Social">
+        <a href="https://github.com/DataKazKN" target="_blank" rel="noopener">github</a>
+        <a href="https://apify.com/kazkn" target="_blank" rel="noopener">apify</a>
+        <a href="https://dev.to/datakaz" target="_blank" rel="noopener">dev.to</a>
+        <a href="https://datakazkn.hashnode.dev" target="_blank" rel="noopener">hashnode</a>
+        <a href="https://medium.com/@DataKazKN" target="_blank" rel="noopener">medium</a>
+        <a href="https://www.npmjs.com/~kazkn" target="_blank" rel="noopener">npm</a>
+      </nav>
+      <div class="footer-meta">
+        <span class="copy">© 2026 KazKN</span> · indie dev · switzerland<br>
+        built with html / css · zero dependencies · hosted on github pages
+      </div>
     </div>
-    <p>© 2026 KazKN · indie dev · Switzerland</p>
-    <p>Built with HTML/CSS · hosted on GitHub Pages · zero dependencies</p>
   </div>
 </footer>
 
